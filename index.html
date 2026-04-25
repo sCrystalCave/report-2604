@@ -15,13 +15,18 @@
         th { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: center; }
         td { border-bottom: 1px solid #eee; padding: 15px; vertical-align: middle; text-align: center; }
         
-        .photo-box { width: 150px; height: 110px; background: #e9ecef; border: 1px dashed #adb5bd; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #6c757d; border-radius: 4px; }
-        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
-        .status-ongoing { background: #fff3cd; color: #856404; } /* 조치예정 */
-        .status-done { background: #d4edda; color: #155724; }    /* 조치완료 */
-        
-        .date-text { font-size: 0.9rem; color: #666; display: block; }
-        .content-text { font-weight: 500; margin-top: 5px; display: block; }
+        .photo-preview { width: 150px; height: 110px; background: #e9ecef; border: 1px dashed #adb5bd; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; cursor: pointer; position: relative; }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+        input[type="file"] { display: none; }
+
+        input[type="text"], input[type="date"], textarea { width: 90%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 5px; }
+        textarea { height: 60px; resize: none; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-save { background: #28a745; color: white; }
+        .btn-excel { background: #1d6f42; color: white; }
+        .btn-add { background: #007bff; color: white; }
     </style>
 </head>
 <body>
@@ -29,53 +34,108 @@
 <div class="container">
     <header>
         <h1>📸 사진대지 관리 시스템</h1>
-        <button style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">+ 새 프로젝트 추가</button>
+        <div class="btn-group">
+            <button class="btn btn-excel" onclick="exportToExcel()">📊 엑셀 다운로드</button>
+            <button class="btn btn-save" onclick="saveToLocal()">💾 브라우저 저장</button>
+        </div>
     </header>
 
-    <!-- 프로젝트 01 -->
     <div class="project-card">
-        <div class="project-title">A구역 배수관 설치 공사</div>
-        <table>
+        <input type="text" class="project-title" id="projectTitle" value="프로젝트명을 입력하세요" style="border:none; border-bottom: 2px solid #007bff; width: 400px;">
+        <table id="photoTable">
             <thead>
                 <tr>
-                    <th>구분</th>
-                    <th>지적분야 (현황)</th>
-                    <th>조치분야 (결과)</th>
-                    <th>관리 상세 내용</th>
-                    <th>상태</th>
+                    <th>지적사진</th>
+                    <th>조치사진</th>
+                    <th>지적 정보</th>
+                    <th>조치 정보</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>공정 01</td>
-                    <td><div class="photo-box">지적 사진 등록</div></td>
-                    <td><div class="photo-box">조치 사진 등록</div></td>
-                    <td style="text-align: left;">
-                        <span class="date-text">📅 지적일: 2026-04-20</span>
-                        <span class="content-text">📝 균열 발생 확인 및 보수 지시</span>
-                        <hr style="border: 0.5px solid #eee; margin: 10px 0;">
-                        <span class="date-text">📅 조치일: 2026-04-25</span>
-                        <span class="content-text">✅ 에폭시 주입 및 보강 완료</span>
+                    <td>
+                        <label class="photo-preview">
+                            <span class="plus-icon">+ 사진 선택</span>
+                            <input type="file" accept="image/*" onchange="previewImage(this)">
+                        </label>
                     </td>
-                    <td><span class="status-badge status-done">조치완료</span></td>
-                </tr>
-                <tr>
-                    <td>공정 02</td>
-                    <td><div class="photo-box">지적 사진 등록</div></td>
-                    <td><div class="photo-box">대기 중</div></td>
-                    <td style="text-align: left;">
-                        <span class="date-text">📅 지적일: 2026-04-24</span>
-                        <span class="content-text">📝 안전 가드레일 미설치</span>
-                        <hr style="border: 0.5px solid #eee; margin: 10px 0;">
-                        <span class="date-text" style="color: #d9534f;">📅 예정일: 2026-04-30</span>
-                        <span class="content-text">⏳ 자재 반입 후 설치 예정</span>
+                    <td>
+                        <label class="photo-preview">
+                            <span class="plus-icon">+ 사진 선택</span>
+                            <input type="file" accept="image/*" onchange="previewImage(this)">
+                        </label>
                     </td>
-                    <td><span class="status-badge status-ongoing">조치예정</span></td>
+                    <td>
+                        <input type="date" class="issue-date" placeholder="지적일">
+                        <textarea class="issue-content" placeholder="지적 내용 입력"></textarea>
+                    </td>
+                    <td>
+                        <input type="date" class="fix-date" placeholder="조치(예정)일">
+                        <textarea class="fix-content" placeholder="조치 내용 입력"></textarea>
+                    </td>
                 </tr>
             </tbody>
         </table>
+        <button class="btn btn-add" style="margin-top:15px;" onclick="addRow()">+ 행 추가</button>
     </div>
 </div>
+
+<script>
+    // 이미지 미리보기 기능
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = input.parentElement;
+                preview.innerHTML = `<img src="${e.target.result}">`;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // 행 추가 기능
+    function addRow() {
+        const table = document.getElementById("photoTable").getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+        newRow.innerHTML = `
+            <td><label class="photo-preview"><span>+ 사진 선택</span><input type="file" accept="image/*" onchange="previewImage(this)"></label></td>
+            <td><label class="photo-preview"><span>+ 사진 선택</span><input type="file" accept="image/*" onchange="previewImage(this)"></label></td>
+            <td><input type="date" class="issue-date"><textarea class="issue-content"></textarea></td>
+            <td><input type="date" class="fix-date"><textarea class="fix-content"></textarea></td>
+        `;
+    }
+
+    // 브라우저 로컬 저장 (임시 저장 기능)
+    function saveToLocal() {
+        alert("브라우저에 현재 상태가 저장되었습니다. (서버 전송은 별도 구축이 필요합니다)");
+    }
+
+    // 엑셀(CSV) 변환 및 다운로드
+    function exportToExcel() {
+        let csv = "\uFEFF"; // 한글 깨짐 방지 BOM
+        csv += "지적일,지적내용,조치일,조치내용\n";
+
+        const rows = document.querySelectorAll("#photoTable tbody tr");
+        rows.forEach(row => {
+            const issueDate = row.querySelector(".issue-date").value;
+            const issueContent = row.querySelector(".issue-content").value.replace(/,/g, ""); // 쉼표 제거
+            const fixDate = row.querySelector(".fix-date").value;
+            const fixContent = row.querySelector(".fix-content").value.replace(/,/g, "");
+            
+            csv += `${issueDate},${issueContent},${fixDate},${fixContent}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "사진대지_리포트.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 
 </body>
 </html>
