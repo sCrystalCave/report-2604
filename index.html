@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>현장 사진대지 관리 시스템</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background-color: #f5f7fa; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        
+        .project-card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        .project-title { font-size: 1.5rem; font-weight: bold; color: #333; margin-bottom: 15px; border-left: 5px solid #007bff; padding-left: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; padding: 12px; text-align: center; }
+        td { border-bottom: 1px solid #eee; padding: 15px; vertical-align: middle; text-align: center; }
+        
+        .photo-box { width: 150px; height: 110px; background: #e9ecef; border: 1px dashed #adb5bd; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #6c757d; border-radius: 4px; }
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+        .status-ongoing { background: #fff3cd; color: #856404; } /* 조치예정 */
+        .status-done { background: #d4edda; color: #155724; }    /* 조치완료 */
+        
+        .date-text { font-size: 0.9rem; color: #666; display: block; }
+        .content-text { font-weight: 500; margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <header>
+        <h1>📸 사진대지 관리 시스템</h1>
+        <button style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">+ 새 프로젝트 추가</button>
+    </header>
+
+    <!-- 프로젝트 01 -->
+    <div class="project-card">
+        <div class="project-title">A구역 배수관 설치 공사</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>지적분야 (현황)</th>
+                    <th>조치분야 (결과)</th>
+                    <th>관리 상세 내용</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>공정 01</td>
+                    <td><div class="photo-box">지적 사진 등록</div></td>
+                    <td><div class="photo-box">조치 사진 등록</div></td>
+                    <td style="text-align: left;">
+                        <span class="date-text">📅 지적일: 2026-04-20</span>
+                        <span class="content-text">📝 균열 발생 확인 및 보수 지시</span>
+                        <hr style="border: 0.5px solid #eee; margin: 10px 0;">
+                        <span class="date-text">📅 조치일: 2026-04-25</span>
+                        <span class="content-text">✅ 에폭시 주입 및 보강 완료</span>
+                    </td>
+                    <td><span class="status-badge status-done">조치완료</span></td>
+                </tr>
+                <tr>
+                    <td>공정 02</td>
+                    <td><div class="photo-box">지적 사진 등록</div></td>
+                    <td><div class="photo-box">대기 중</div></td>
+                    <td style="text-align: left;">
+                        <span class="date-text">📅 지적일: 2026-04-24</span>
+                        <span class="content-text">📝 안전 가드레일 미설치</span>
+                        <hr style="border: 0.5px solid #eee; margin: 10px 0;">
+                        <span class="date-text" style="color: #d9534f;">📅 예정일: 2026-04-30</span>
+                        <span class="content-text">⏳ 자재 반입 후 설치 예정</span>
+                    </td>
+                    <td><span class="status-badge status-ongoing">조치예정</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
